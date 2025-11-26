@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using back.Repositories.Interfaces;
+using back.Model;
 
 namespace back.Repositories
 {
@@ -12,5 +13,19 @@ namespace back.Repositories
             _context = context;
         }
 
+        public async Task<List<Term>> GetArchivedTerms()
+        {
+            return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.ARCHIVED).OrderBy(t => t.Name).ToListAsync();
+        }
+
+        public async Task<List<Term>> GetDraftTerms(int id)
+        {
+            return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.DRAFT && t.CreatedBy.Id == id).OrderBy(t => t.Name).ToListAsync();
+        }
+
+        public async Task<List<Term>> GetPublishedTerms()
+        {
+            return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.PUBLISHED).OrderBy(t => t.Name).ToListAsync();
+        }
     }
 }

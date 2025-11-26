@@ -13,12 +13,61 @@ namespace back.Controllers
     public class TermController : Controller
     {
         
-        private readonly IUserService _userService;
+        private readonly ITermService _termService;
 
-        public TermController(IUserService userService)
+        public TermController(ITermService termService)
         {
-            _userService = userService;
+            _termService = termService;
         }
 
+        [HttpGet("published")]
+        public async Task<IActionResult> GetPublishedTerms()
+        {
+            try
+            {
+                var terms = await _termService.GetPublishedTerms();
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("draft")]
+        public async Task<IActionResult> GetDraftTerms()
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can access draft terms.");
+                }
+                var terms = await _termService.GetDraftTerms(loggedUser.Id);
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("archived")]
+        public async Task<IActionResult> GetArchivedTerms()
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can access archived terms.");
+                }
+                var terms = await _termService.GetArchivedTerms();
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
