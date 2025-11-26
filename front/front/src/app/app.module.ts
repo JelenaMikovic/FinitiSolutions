@@ -14,6 +14,8 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { TermsComponent } from './terms/terms.component';
+import { ArchiveComponent } from './archive/archive.component';
+import { DraftsComponent } from './drafts/drafts.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { TermsComponent } from './terms/terms.component';
     LoginComponent,
     HomeComponent,
     TermsComponent,
+    ArchiveComponent,
+    DraftsComponent,
   ],
   imports: [
     BrowserModule,
