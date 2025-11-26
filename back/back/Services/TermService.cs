@@ -46,7 +46,7 @@ namespace back.Services
                 Definition = term.Definition,
                 Status = term.Status.ToString(),
                 CreatedAt = term.CreatedAt,
-                CreatedBy = term.CreatedBy.Email
+                CreatedBy = term.CreatedBy.Name + " " + term.CreatedBy.Surname
             }).ToList();
         }
 

@@ -34,7 +34,7 @@ namespace back.Controllers
             }
         }
 
-        [HttpGet("draft")]
+        [HttpGet("drafts")]
         public async Task<IActionResult> GetDraftTerms()
         {
             try
@@ -70,7 +70,7 @@ namespace back.Controllers
             }
         }
 
-        [HttpPost("")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateTerm(CreateTermDTO termDTO)
         {
             try
@@ -88,7 +88,7 @@ namespace back.Controllers
             }
         }
 
-        [HttpPut("")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateTerm(UpdateTermDTO updateTermDTO)
         {
             try
@@ -124,7 +124,7 @@ namespace back.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteDraft(int id)
         {
             try

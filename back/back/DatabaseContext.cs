@@ -22,8 +22,8 @@ namespace back
             modelBuilder.Entity<ForbiddenWord>().ToTable("ForbiddenWords");
 
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Email = "bob@mail.com", Password = "123", Role = UserRole.ADMIN } ,
-                new User { Id = 2, Email = "ross@mail.com", Password = "123", Role = UserRole.USER }
+                new User { Id = 1, Email = "bob@mail.com", Name = "Bob", Surname = "Ross", Password = "123", Role = UserRole.ADMIN } ,
+                new User { Id = 2, Email = "ross@mail.com", Name = "Rob", Surname = "Boss", Password = "123", Role = UserRole.USER }
             );
 
             modelBuilder.Entity<ForbiddenWord>().HasData(
