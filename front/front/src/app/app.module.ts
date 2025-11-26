@@ -11,8 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './login-register/login.component';
+import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { TermsComponent } from './terms/terms.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     LoginComponent,
     HomeComponent,
+    TermsComponent,
   ],
   imports: [
     BrowserModule,
