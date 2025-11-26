@@ -105,5 +105,42 @@ namespace back.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("archive/{id}")]
+        public async Task<IActionResult> ArchiveTerm(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can archive terms.");
+                }
+                await _termService.ArchiveTerm(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDraft(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can delete terms.");
+                }
+                await _termService.DeleteDraft(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        
+        }
     }
 }

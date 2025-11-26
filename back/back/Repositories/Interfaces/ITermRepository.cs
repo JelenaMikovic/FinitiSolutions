@@ -5,6 +5,7 @@ namespace back.Repositories.Interfaces
     public interface ITermRepository
     {
         Task AddTerm(Term newTerm);
+        Task DeleteTerm(Term term);
         Task<List<Term>> GetArchivedTerms();
         Task<List<Term>> GetDraftTerms(int id);
         Task<List<Term>> GetPublishedTerms();

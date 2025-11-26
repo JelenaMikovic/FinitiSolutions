@@ -4,10 +4,12 @@ namespace back.Services.Interfaces
 {
     public interface ITermService
     {
-        Task CreateNewTerm(CreateTermDTO termDTO, int id);
+        Task ArchiveTerm(int termId, int userId);
+        Task CreateNewTerm(CreateTermDTO termDTO, int userId);
+        Task DeleteDraft(int termId, int userId);
         Task<List<TermDTO>> GetArchivedTerms();
-        Task<List<TermDTO>> GetDraftTerms(int id);
+        Task<List<TermDTO>> GetDraftTerms(int userId);
         Task<List<TermDTO>> GetPublishedTerms();
-        Task UpdateTerm(UpdateTermDTO updateTermDTO, int id);
+        Task UpdateTerm(UpdateTermDTO updateTermDTO, int userId);
     }
 }

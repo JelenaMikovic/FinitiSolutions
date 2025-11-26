@@ -23,6 +23,11 @@ namespace back.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteTerm(Term term)
+        {
+            await _context.Terms.Where(t => t.Id == term.Id).ExecuteDeleteAsync();
+        }
+
         public async Task<List<Term>> GetArchivedTerms()
         {
             return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.ARCHIVED).OrderBy(t => t.Name).ToListAsync();

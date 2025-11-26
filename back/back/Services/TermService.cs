@@ -23,9 +23,9 @@ namespace back.Services
             return MapToDTOs(terms);
         }
 
-        public async Task<List<TermDTO>> GetDraftTerms(int id)
+        public async Task<List<TermDTO>> GetDraftTerms(int userId)
         {
-            var terms = await _termRepository.GetDraftTerms(id);
+            var terms = await _termRepository.GetDraftTerms(userId);
             return MapToDTOs(terms);
         }
 
@@ -48,9 +48,9 @@ namespace back.Services
             }).ToList();
         }
 
-        public async Task CreateNewTerm(CreateTermDTO termDTO, int id)
+        public async Task CreateNewTerm(CreateTermDTO termDTO, int userId)
         {
-            User user = await _userRepository.GetUserById(id);
+            User user = await _userRepository.GetUserById(userId);
             if (user == null)
             {
                 throw new Exception("User not found.");
@@ -66,9 +66,9 @@ namespace back.Services
             await _termRepository.AddTerm(newTerm);
         }
 
-        public async Task UpdateTerm(UpdateTermDTO updateTermDTO, int id)
+        public async Task UpdateTerm(UpdateTermDTO updateTermDTO, int userId)
         {
-            User user = await _userRepository.GetUserById(id);
+            User user = await _userRepository.GetUserById(userId);
             if (user == null)
             {
                 throw new Exception("User not found.");
@@ -95,6 +95,49 @@ namespace back.Services
                 term.Definition = updateTermDTO.Definition;
             }
             await _termRepository.UpdateTerm(term);
+        }
+
+        public async Task ArchiveTerm(int termId, int userId)
+        {
+            User user = await _userRepository.GetUserById(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            Term term = await _termRepository.GetTermById(termId);
+            if (term == null)
+            {
+                throw new Exception("Term not found.");
+            }
+            if (term.Status != TermStatus.PUBLISHED)
+            {
+                throw new Exception("Only published terms can be archived.");
+            }
+            term.Status = TermStatus.ARCHIVED;
+            await _termRepository.UpdateTerm(term);
+        }
+
+        public async Task DeleteDraft(int termId, int userId)
+        {
+            User user = await _userRepository.GetUserById(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            Term term = await _termRepository.GetTermById(termId);
+            if (term == null)
+            {
+                throw new Exception("Term not found.");
+            }
+            if (term.Status != TermStatus.DRAFT)
+            {
+                throw new Exception("Only drafted terms can be deleted.");
+            }
+            if (term.CreatedBy.Id != user.Id)
+            {
+                throw new Exception("You are not authorized to update this term.");
+            }
+            await _termRepository.DeleteTerm(term);
         }
     }
 }
