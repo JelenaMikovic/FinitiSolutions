@@ -69,5 +69,23 @@ namespace back.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("")]
+        public async Task<IActionResult> CreateTerm(CreateTermDTO termDTO)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can add new terms.");
+                }
+                await _termService.CreateNewTerm(termDTO, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

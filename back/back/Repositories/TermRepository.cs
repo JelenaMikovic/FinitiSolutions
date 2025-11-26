@@ -13,6 +13,16 @@ namespace back.Repositories
             _context = context;
         }
 
+        public async Task AddTerm(Term newTerm)
+        {
+            if (newTerm.CreatedBy != null)
+            {
+                _context.Users.Attach(newTerm.CreatedBy);
+            }
+            await _context.Terms.AddAsync(newTerm);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Term>> GetArchivedTerms()
         {
             return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.ARCHIVED).OrderBy(t => t.Name).ToListAsync();

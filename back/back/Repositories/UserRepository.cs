@@ -12,9 +12,14 @@ namespace back.Repositories
             _context = context;
         }
 
-        public Task<User> GetByEmailAndPassword(string email, string password)
+        public async Task<User> GetByEmailAndPassword(string email, string password)
         {
-            return _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

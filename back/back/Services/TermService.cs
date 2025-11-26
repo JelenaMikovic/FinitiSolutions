@@ -8,10 +8,12 @@ namespace back.Services
     public class TermService : ITermService
     {
         private readonly ITermRepository _termRepository;
+        private readonly IUserRepository _userRepository;
 
-        public TermService(ITermRepository termRepository)
+        public TermService(ITermRepository termRepository, IUserRepository userRepository)
         {
             _termRepository = termRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<List<TermDTO>> GetArchivedTerms()
@@ -43,6 +45,24 @@ namespace back.Services
                 CreatedAt = term.CreatedAt,
                 CreatedBy = term.CreatedBy.Email
             }).ToList();
+        }
+
+        public async Task CreateNewTerm(CreateTermDTO termDTO, int id)
+        {
+            User user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            Term newTerm = new Term
+            {
+                Name = termDTO.Name,
+                Definition = termDTO.Definition,
+                Status = TermStatus.DRAFT,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = user
+            };
+            await _termRepository.AddTerm(newTerm);
         }
     }
 }
