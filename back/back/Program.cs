@@ -50,8 +50,11 @@ builder.Services.AddAuthorization(o =>
 });
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IForbiddenWordsRepository, ForbiddenWordsRepository>();
+builder.Services.AddTransient<ITermRepository, TermRepository>();
 
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITermService, TermService>();
 
 builder.Services.AddCors(options =>
 {
