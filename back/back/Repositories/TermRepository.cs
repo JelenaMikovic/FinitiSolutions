@@ -37,5 +37,16 @@ namespace back.Repositories
         {
             return await _context.Terms.Include(t => t.CreatedBy).Where(t => t.Status == TermStatus.PUBLISHED).OrderBy(t => t.Name).ToListAsync();
         }
+
+        public async Task<Term> GetTermById(int id)
+        {
+            return await _context.Terms.Include(t => t.CreatedBy).FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task UpdateTerm(Term term)
+        {
+            _context.Terms.Update(term);
+            await _context.SaveChangesAsync();
+        }
     }
 }

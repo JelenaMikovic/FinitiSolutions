@@ -87,5 +87,23 @@ namespace back.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateTerm(UpdateTermDTO updateTermDTO)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can add update terms.");
+                }
+                await _termService.UpdateTerm(updateTermDTO, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

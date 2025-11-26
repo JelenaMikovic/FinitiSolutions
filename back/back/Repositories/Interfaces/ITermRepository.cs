@@ -8,5 +8,7 @@ namespace back.Repositories.Interfaces
         Task<List<Term>> GetArchivedTerms();
         Task<List<Term>> GetDraftTerms(int id);
         Task<List<Term>> GetPublishedTerms();
+        Task<Term> GetTermById(int id);
+        Task UpdateTerm(Term term);
     }
 }

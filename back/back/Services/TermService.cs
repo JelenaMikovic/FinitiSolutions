@@ -2,6 +2,7 @@
 using back.Services.Interfaces;
 using back.DTOs;
 using back.Model;
+using Microsoft.IdentityModel.Tokens;
 
 namespace back.Services
 {
@@ -63,6 +64,37 @@ namespace back.Services
                 CreatedBy = user
             };
             await _termRepository.AddTerm(newTerm);
+        }
+
+        public async Task UpdateTerm(UpdateTermDTO updateTermDTO, int id)
+        {
+            User user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            Term term = await _termRepository.GetTermById(updateTermDTO.Id);
+            if (term == null)
+            {
+                throw new Exception("Term not found.");
+            }
+            if (term.Status != TermStatus.DRAFT)
+            {
+                throw new Exception("Only draft terms can be updated.");
+            }
+            if (term.CreatedBy.Id != user.Id)
+            {
+                throw new Exception("You are not authorized to update this term.");
+            }
+            if (!string.IsNullOrWhiteSpace(updateTermDTO.Name))
+            {
+                term.Name = updateTermDTO.Name;
+            }
+            if (!string.IsNullOrWhiteSpace(updateTermDTO.Definition))
+            {
+                term.Definition = updateTermDTO.Definition;
+            }
+            await _termRepository.UpdateTerm(term);
         }
     }
 }

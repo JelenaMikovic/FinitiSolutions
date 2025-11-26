@@ -8,5 +8,6 @@ namespace back.Services.Interfaces
         Task<List<TermDTO>> GetArchivedTerms();
         Task<List<TermDTO>> GetDraftTerms(int id);
         Task<List<TermDTO>> GetPublishedTerms();
+        Task UpdateTerm(UpdateTermDTO updateTermDTO, int id);
     }
 }
