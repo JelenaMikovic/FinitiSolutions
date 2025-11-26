@@ -6,6 +6,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,7 +44,11 @@ import { DraftsComponent } from './drafts/drafts.component';
     HttpClientModule,
     MatSnackBarModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatListModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatTableModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
