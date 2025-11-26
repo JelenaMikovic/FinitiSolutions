@@ -10,11 +10,13 @@ namespace back.Services
     {
         private readonly ITermRepository _termRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IForbiddenWordsRepository _forbiddenWordsRepository;
 
-        public TermService(ITermRepository termRepository, IUserRepository userRepository)
+        public TermService(ITermRepository termRepository, IUserRepository userRepository, IForbiddenWordsRepository forbiddenWordsRepository)
         {
             _termRepository = termRepository;
             _userRepository = userRepository;
+            _forbiddenWordsRepository = forbiddenWordsRepository;
         }
 
         public async Task<List<TermDTO>> GetArchivedTerms()
@@ -138,6 +140,39 @@ namespace back.Services
                 throw new Exception("You are not authorized to update this term.");
             }
             await _termRepository.DeleteTerm(term);
+        }
+
+        public async Task PublishTerm(int termId, int userId)
+        {
+            User user = await _userRepository.GetUserById(userId);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            Term term = await _termRepository.GetTermById(termId);
+            if (term == null)
+            {
+                throw new Exception("Term not found.");
+            }
+            if (term.Status != TermStatus.DRAFT)
+            {
+                throw new Exception("Only draft terms can be published.");
+            }
+            if (term.CreatedBy.Id != user.Id)
+            {
+                throw new Exception("You are not authorized to publish this term.");
+            }
+            List<ForbiddenWord> forbiddenWords = await _forbiddenWordsRepository.GetAllForbiddenWords();
+            foreach (var forbiddenWord in forbiddenWords)
+            {
+                if (term.Name.Contains(forbiddenWord.Word, StringComparison.OrdinalIgnoreCase) ||
+                    term.Definition.Contains(forbiddenWord.Word, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new Exception("The term contains forbidden words and cannot be published.");
+                }
+            }
+            term.Status = TermStatus.PUBLISHED;
+            await _termRepository.UpdateTerm(term);
         }
     }
 }

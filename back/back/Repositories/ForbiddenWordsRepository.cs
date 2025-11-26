@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using back.Repositories.Interfaces;
+using back.Model;
 
 namespace back.Repositories
 {
@@ -12,5 +13,9 @@ namespace back.Repositories
             _context = context;
         }
 
+        public async Task<List<ForbiddenWord>> GetAllForbiddenWords()
+        {
+            return await _context.ForbiddenWords.ToListAsync();
+        }
     }
 }

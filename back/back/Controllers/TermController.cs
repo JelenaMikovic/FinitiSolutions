@@ -12,7 +12,7 @@ namespace back.Controllers
     [Route("api/term")]
     public class TermController : Controller
     {
-        
+
         private readonly ITermService _termService;
 
         public TermController(ITermService termService)
@@ -140,7 +140,25 @@ namespace back.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        
+
+        }
+
+        [HttpPut("publish/{id}")]
+        public async Task<IActionResult> PublishTerm(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can publish terms.");
+                }
+                await _termService.PublishTerm(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
