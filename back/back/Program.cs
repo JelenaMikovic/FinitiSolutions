@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using nvt_back;
+using back;
 using System.Text;
-using nvt_back.Repositories;
-using nvt_back.Repositories.Interfaces;
-using nvt_back.Services;
-using nvt_back.Services.Interfaces;
+using back.Repositories;
+using back.Repositories.Interfaces;
+using back.Services;
+using back.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

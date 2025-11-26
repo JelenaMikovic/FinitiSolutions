@@ -1,8 +1,8 @@
-﻿using nvt_back.Repositories.Interfaces;
-using nvt_back.Services.Interfaces;
-using nvt_back.DTOs;
+﻿using back.Repositories.Interfaces;
+using back.Services.Interfaces;
+using back.DTOs;
 
-namespace nvt_back.Services
+namespace back.Services
 {
     public class UserService : IUserService
     {

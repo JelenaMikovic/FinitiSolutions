@@ -1,4 +1,4 @@
-﻿namespace nvt_back.Repositories.Interfaces
+﻿namespace back.Repositories.Interfaces
 {
     public interface IUserRepository
     {

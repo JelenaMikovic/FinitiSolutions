@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Security.Claims;
 
-namespace nvt_back
+namespace back
 {
     public class ClaimsMiddleware
     {
@@ -17,23 +17,27 @@ namespace nvt_back
             Console.WriteLine("Middleware Start");
             if (context.User.Identity is ClaimsIdentity identity)
             {
-                Console.WriteLine("Middleware sdsadsad");
                 try
                 {
                     User loggedUser = new User();
-                    loggedUser.Id = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                    var idClaim = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    if (string.IsNullOrEmpty(idClaim))
+                    {
+                        throw new Exception("NameIdentifier claim is missing.");
+                    }
+                    loggedUser.Id = int.Parse(idClaim);
                     loggedUser.Email = identity.FindFirst(ClaimTypes.Email)?.Value;
                     loggedUser.Role = Enum.Parse<UserRole>(identity.FindFirst(ClaimTypes.Role)?.Value);
-                    context.Items["loggedUser"] = loggedUser;
 
-                    Console.WriteLine("Middleware user");
-                    Console.WriteLine(context.Items["loggedUser"]);
+                    context.Items["loggedUser"] = loggedUser;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception in middleware: {ex}");
                 }
             }
+
 
             await _next(context);
         }

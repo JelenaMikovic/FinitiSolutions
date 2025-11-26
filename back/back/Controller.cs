@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace nvt_back
+namespace back
 {
     public class Controller : ControllerBase
     {

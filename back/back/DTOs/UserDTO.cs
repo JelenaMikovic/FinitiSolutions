@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace nvt_back.DTOs
+namespace back.DTOs
 {
     internal class UserDTO
     {

@@ -1,6 +1,6 @@
-﻿using nvt_back.DTOs;
+﻿using back.DTOs;
 
-namespace nvt_back.Services.Interfaces
+namespace back.Services.Interfaces
 {
     public interface IUserService
     {

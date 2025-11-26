@@ -1,4 +1,4 @@
-﻿namespace nvt_back.DTOs
+﻿namespace back.DTOs
 {
     public class LogInDto
     {

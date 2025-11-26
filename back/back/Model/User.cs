@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace nvt_back
+namespace back
 {
     public enum UserRole
     {

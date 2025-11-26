@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using nvt_back.DTOs;
-using nvt_back.Services.Interfaces;
+using back.DTOs;
+using back.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace nvt_back.Controllers
+namespace back.Controllers
 {
     [ApiController]
     [Route("api/user")]

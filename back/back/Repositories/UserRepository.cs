@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using nvt_back.Repositories.Interfaces;
+using back.Repositories.Interfaces;
 
-namespace nvt_back.Repositories
+namespace back.Repositories
 {
     public class UserRepository : IUserRepository
     {
