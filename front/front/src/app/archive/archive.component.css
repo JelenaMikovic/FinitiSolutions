@@ -1,0 +1,45 @@
+.search-container {
+  margin: 24px auto 16px auto;
+  width: 70%;
+}
+
+.search-field {
+  width: 100%;
+}
+
+.table-container {
+  width: 70%;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th.mat-header-cell {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  font-weight: var(--font-weight-semibold);
+}
+
+td.mat-cell {
+  padding: 12px;
+  color: var(--secondary-color);
+}
+
+.term-name {
+  font-weight: var(--font-weight-bold);
+}
+
+tr.mat-row:nth-child(even) {
+  background-color: var(--light-color);
+}
+
+.no-results {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--secondary-color);
+  font-weight: var(--font-weight-medium);
+}
