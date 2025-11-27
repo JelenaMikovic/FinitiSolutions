@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace back
 {
@@ -14,23 +13,39 @@ namespace back
 
         public async Task Invoke(HttpContext context)
         {
-            Console.WriteLine("Middleware Start");
-            if (context.User.Identity is ClaimsIdentity identity)
+            if (context.User.Identity is ClaimsIdentity identity && context.User.Identity.IsAuthenticated)
             {
                 try
                 {
                     User loggedUser = new User();
 
-                    var idClaim = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    var idClaim = identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
                     if (string.IsNullOrEmpty(idClaim))
                     {
-                        throw new Exception("NameIdentifier claim is missing.");
+                        Console.WriteLine("Warning: User ID claim is missing.");
                     }
-                    loggedUser.Id = int.Parse(idClaim);
-                    loggedUser.Email = identity.FindFirst(ClaimTypes.Email)?.Value;
-                    loggedUser.Role = Enum.Parse<UserRole>(identity.FindFirst(ClaimTypes.Role)?.Value);
+                    else
+                    {
+                        loggedUser.Id = int.Parse(idClaim);
+                    }
 
-                    context.Items["loggedUser"] = loggedUser;
+                    var emailClaim = identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+                    if (!string.IsNullOrEmpty(emailClaim))
+                    {
+                        loggedUser.Email = emailClaim;
+                    }
+
+                    var roleClaim = identity.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+                    if (!string.IsNullOrEmpty(roleClaim))
+                    {
+                        loggedUser.Role = Enum.Parse<UserRole>(roleClaim);
+                    }
+
+                    if (loggedUser.Id > 0)
+                    {
+                        context.Items["loggedUser"] = loggedUser;
+                        //Console.WriteLine($"Logged user: {loggedUser.Email} ({loggedUser.Role})");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -38,10 +53,7 @@ namespace back
                 }
             }
 
-
             await _next(context);
         }
-
     }
-
 }

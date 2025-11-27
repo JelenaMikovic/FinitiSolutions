@@ -80,19 +80,5 @@ namespace back.Controllers
 
             return Ok();
         }
-
-
-        [HttpGet("authenticate")]
-        public async Task<ActionResult> Authenticate()
-        {
-            if (_user == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                return Ok(_user);
-            }
-        }
     }
 }

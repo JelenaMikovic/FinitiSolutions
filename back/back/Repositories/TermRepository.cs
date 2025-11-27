@@ -25,8 +25,14 @@ namespace back.Repositories
 
         public async Task DeleteTerm(Term term)
         {
-            await _context.Terms.Where(t => t.Id == term.Id).ExecuteDeleteAsync();
+            var entity = await _context.Terms.FirstOrDefaultAsync(t => t.Id == term.Id);
+            if (entity != null)
+            {
+                _context.Terms.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
         }
+
 
         public async Task<List<Term>> GetArchivedTerms()
         {

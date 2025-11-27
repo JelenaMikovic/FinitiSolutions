@@ -2,7 +2,7 @@
 
 namespace back.DTOs
 {
-    internal class UserDTO
+    public class UserDTO
     {
 
         public string Email { get; set; }

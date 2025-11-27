@@ -162,6 +162,14 @@ namespace back.Services
             {
                 throw new Exception("You are not authorized to publish this term.");
             }
+            if (string.IsNullOrWhiteSpace(term.Name))
+            {
+                throw new Exception("The term name must not be empty.");
+            }
+            if (string.IsNullOrWhiteSpace(term.Definition) || term.Definition.Length < 30)
+            {
+                throw new Exception("The definition must be at least 30 characters long.");
+            }
             List<ForbiddenWord> forbiddenWords = await _forbiddenWordsRepository.GetAllForbiddenWords();
             foreach (var forbiddenWord in forbiddenWords)
             {
