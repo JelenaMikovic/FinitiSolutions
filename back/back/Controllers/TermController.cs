@@ -1,0 +1,164 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using back.DTOs;
+using back.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace back.Controllers
+{
+    [ApiController]
+    [Route("api/term")]
+    public class TermController : Controller
+    {
+
+        private readonly ITermService _termService;
+
+        public TermController(ITermService termService)
+        {
+            _termService = termService;
+        }
+
+        [HttpGet("published")]
+        public async Task<IActionResult> GetPublishedTerms()
+        {
+            try
+            {
+                var terms = await _termService.GetPublishedTerms();
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("drafts")]
+        public async Task<IActionResult> GetDraftTerms()
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can access draft terms.");
+                }
+                var terms = await _termService.GetDraftTerms(loggedUser.Id);
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("archived")]
+        public async Task<IActionResult> GetArchivedTerms()
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can access archived terms.");
+                }
+                var terms = await _termService.GetArchivedTerms();
+                return Ok(terms);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateTerm(CreateTermDTO termDTO)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can add new terms.");
+                }
+                await _termService.CreateNewTerm(termDTO, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateTerm(UpdateTermDTO updateTermDTO)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can add update terms.");
+                }
+                await _termService.UpdateTerm(updateTermDTO, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("archive/{id}")]
+        public async Task<IActionResult> ArchiveTerm(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can archive terms.");
+                }
+                await _termService.ArchiveTerm(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteDraft(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can delete terms.");
+                }
+                await _termService.DeleteDraft(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPut("publish/{id}")]
+        public async Task<IActionResult> PublishTerm(int id)
+        {
+            try
+            {
+                if (HttpContext.Items["loggedUser"] is not User loggedUser || loggedUser.Role != UserRole.ADMIN)
+                {
+                    return Unauthorized("Only authors can publish terms.");
+                }
+                await _termService.PublishTerm(id, loggedUser.Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    }
+}

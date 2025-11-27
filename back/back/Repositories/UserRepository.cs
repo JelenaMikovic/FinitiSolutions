@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using back.Repositories.Interfaces;
+
+namespace back.Repositories
+{
+    public class UserRepository : IUserRepository
+    {
+        private readonly DatabaseContext _context;
+
+        public UserRepository(DatabaseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<User> GetByEmailAndPassword(string email, string password)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+    }
+}

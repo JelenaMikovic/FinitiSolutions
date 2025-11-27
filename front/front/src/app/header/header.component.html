@@ -1,0 +1,27 @@
+<nav class="navbar section-content">
+  <a href="#" class="nav-logo">
+    <h2 class="logo-text">Glossary</h2>
+  </a>
+
+  <div class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="nav-menu" [class.active]="isMenuOpen">
+
+    <a routerLink="/home" class="nav-link">Home</a>
+    <a routerLink="/terms" class="nav-link">Terms</a>
+
+    <a *ngIf="userRole === 1" routerLink="/drafts" class="nav-link">Drafts</a>
+    <a *ngIf="userRole === 1" routerLink="/archived" class="nav-link">Archived</a>
+
+    <a *ngIf="!isLoggedIn" routerLink="/login" class="nav-link">Log In</a>
+
+    <a *ngIf="isLoggedIn" (click)="logout()" class="nav-link" style="cursor:pointer;">
+      Logout
+    </a>
+
+  </div>
+</nav>

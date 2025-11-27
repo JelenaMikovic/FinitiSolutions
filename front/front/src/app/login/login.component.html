@@ -1,0 +1,64 @@
+<html>
+<body>
+    <div class="container">
+      <input type="checkbox" id="flip" hidden>
+      <div class="cover">
+        <div class="front">
+          <img src="/placeholder.jpg" alt="">
+          <div class="text">
+            <span class="text-1">Lorem ipsum dolor sit amet, <br> adipiscing elit. </span>
+            <span class="text-2">Pellentesque finibus.</span>
+          </div>
+        </div>
+        <div class="back">
+          <img class="backImg" src="/placeholder.jpg" alt="">
+          <div class="text">
+            <span class="text-1">Lorem ipsum dolor sit amet, <br> adipiscing elit. </span>
+            <span class="text-2">Pellentesque finibus.</span>
+          </div>
+        </div>
+      </div>
+      <div class="forms">
+          <div class="form-content">
+            <div class="login-form">
+              <div class="title">Log In</div>
+              <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="input-boxes">
+                  <div class="input-box">
+                    <input type="email" placeholder="Enter your email" formControlName="email" required>
+                  </div>
+                  <div class="input-box">
+                    <input type="password" placeholder="Enter your password" formControlName="password" required>
+                  </div>
+                  <div class="button input-box">
+                    <input type="submit" value="Submit">
+                  </div>
+                  <div class="text sign-up-text">Don't have an account? <label for="flip">Sign-up now!</label></div>
+                </div>
+              </form>
+        </div>
+          <div class="signup-form">
+            <div class="title">Sign Up</div>
+            <form [formGroup]="signupForm" (ngSubmit)="signup()">
+              <div class="input-boxes">
+                <div class="input-box">
+                  <input type="text" placeholder="Enter your name" formControlName="name" required>
+                </div>
+                <div class="input-box">
+                  <input type="email" placeholder="Enter your email" formControlName="email" required>
+                </div>
+                <div class="input-box">
+                  <input type="password" placeholder="Enter your password" formControlName="password" required>
+                </div>
+                <div class="button input-box">
+                  <input type="submit" value="Submit">
+                </div>
+                <div class="text sign-up-text">Already have an account? <label for="flip">Log-in now!</label></div>
+              </div>
+            </form>
+      </div>
+      </div>
+      </div>
+    </div>
+</body>
+</html>
